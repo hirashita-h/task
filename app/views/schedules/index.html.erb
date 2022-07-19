@@ -1,0 +1,45 @@
+<div class="index">
+  <p>スケジュール一覧</p>
+  <% if flash[:notice] %>
+    <p class="notice"><%= flash[:notice] %></p>
+  <% end %>
+  <table class="index_table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>タイトル</th>
+        <th>開始日</th>
+        <th>終了日</th>
+        <th>終日</th>
+        <th>スケジュール更新日時</th>
+        <th>確認</th>
+        <th>編集</th>
+        <th>削除</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @schedules.each do |schedule| %>
+        <tr>
+          <td><%= schedule.id %></td>
+          <td><%= schedule.title %></td>
+          <td><%= schedule.start.to_s(:datetime_jp)  %></td>
+          <td><%= schedule.end.to_s(:datetime_jp) %></td>
+          <td><% if schedule.all_day == true %>
+                ○
+              <% else schedule.all_day == false %>
+
+              <% end %>
+          </td>
+          <td><%= schedule.updated_at.to_s(:datetimehm_jp) %></td>
+          <td><%= link_to "確認", schedule, class:"link" %></td>
+          <td><%= link_to "編集", edit_schedule_path(schedule), class:"link" %></td>
+          <td><%= link_to "削除", schedule, data: { turbo_method: :delete,turbo_confirm: "本当に削除しますか？" } , class:"link" %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <p><%= link_to "スケジュール新規登録", :new_schedule, class:"link"%></p>
+</div>
+
